@@ -16,29 +16,6 @@ void drawLineDDA(Point p1, Point p2);
 void drawLineBresenham(Point p1, Point p2);
 void drawLineBresenhamV(Point p1, Point p2);
 
-void drawLineDDA(Point p1, Point p2)
-{
-    int dx = p2.x - p1.x;
-    int dy = p2.y - p1.y;
-
-    int steps = std::max(abs(dx), abs(dy));
-
-    float xInc = dx / (float)steps;
-    float yInc = dy / (float)steps;
-
-    float x = p1.x;
-    float y = p1.y;
-
-    glBegin(GL_POINTS);
-    for (int i = 0; i <= steps; ++i)
-    {
-        glVertex2i(round(x), round(y));
-        x += xInc;
-        y += yInc;
-    }
-    glEnd();
-}
-
 void drawLineBresenham(Point p1, Point p2)
 {
     if (abs(p2.x - p1.x) < abs(p2.y - p1.y))
@@ -123,20 +100,16 @@ void display()
 {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glColor3f(1.0, 1.0, 1.0);
-
-    drawLineDDA(Point(0, 0), Point(10, 30));
-
     glColor3f(0.0, 1.0, 0.0);
 
-    drawLineBresenham(Point(0, 0), Point(10, 30));
-    drawLineBresenham(Point(0, 0), Point(30, 10));
-    drawLineBresenham(Point(100, 100), Point(90, 70));
-    drawLineBresenham(Point(100, 100), Point(70, 90));
-    drawLineBresenham(Point(0, 100), Point(10, 70));
-    drawLineBresenham(Point(0, 100), Point(30, 90));
-    drawLineBresenham(Point(100, 0), Point(90, 30));
-    drawLineBresenham(Point(100, 0), Point(70, 10));
+    drawLineBresenham(Point(0, 0), Point(25, 50));
+    drawLineBresenham(Point(0, 0), Point(50, 25));
+    drawLineBresenham(Point(100, 100), Point(75, 50));
+    drawLineBresenham(Point(100, 100), Point(50, 75));
+    drawLineBresenham(Point(0, 100), Point(25, 50));
+    drawLineBresenham(Point(0, 100), Point(50, 75));
+    drawLineBresenham(Point(100, 0), Point(75, 50));
+    drawLineBresenham(Point(100, 0), Point(50, 25));
 
     glFlush();
 }
