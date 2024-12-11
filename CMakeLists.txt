@@ -12,5 +12,4 @@ find_package(GLUT REQUIRED)
 
 add_executable(bin src/main.cpp)
 
-# Link OpenGL and GLUT libraries
 target_link_libraries(bin OpenGL::GL GLUT::GLUT)
