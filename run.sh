@@ -2,10 +2,7 @@
 
 clear
 
-make -C build -t
+cd build
+make
 
-./build/bin
-
-sleep 2
-
-exit
+./bin
