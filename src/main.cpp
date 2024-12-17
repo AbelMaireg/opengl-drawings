@@ -12,88 +12,34 @@ class Point
     }
 };
 
-void drawLineDDA(Point p1, Point p2);
-void drawLineBresenham(Point p1, Point p2);
-void drawLineBresenhamV(Point p1, Point p2);
-
-void drawLineBresenham(Point p1, Point p2)
+void drawCircle(Point p1, int radius)
 {
-    if (abs(p2.x - p1.x) < abs(p2.y - p1.y))
+    int x = 0;
+    int y = -radius;
+    int p = 0.25 - radius;
+
+    glBegin(GL_POINTS);
+    while (x < -y)
     {
-        drawLineBresenhamV(p1, p2);
-        return;
-    }
-
-    if (p1.x > p2.x)
-    {
-        std::swap(p1.x, p2.x);
-        std::swap(p1.y, p2.y);
-    }
-
-    int dx = p2.x - p1.x;
-    int dy = p2.y - p1.y;
-
-    int dir = dy > 0 ? 1 : -1;
-    dy *= dir;
-
-    if (dx != 0)
-    {
-        int p = 2 * dy - dx;
-
-        glBegin(GL_POINTS);
-
-        for (int x = p1.x, y = p1.y; x < p1.x + dx + 1; x++)
+        if (p > 0)
         {
-            glVertex2i(x, y);
-
-            if (p >= 0)
-            {
-                y += dir;
-                p -= 2 * dx;
-            }
-
-            p += 2 * dy;
+            y += 1;
+            p += 2 * y + 2;
         }
+        p += 2 * x + 1;
 
-        glEnd();
+        glVertex2i(p1.x + x, p1.y + y);
+        glVertex2i(p1.x + x, p1.y - y);
+        glVertex2i(p1.x - x, p1.y + y);
+        glVertex2i(p1.x - x, p1.y - y);
+        glVertex2i(p1.x + y, p1.y + x);
+        glVertex2i(p1.x + y, p1.y - x);
+        glVertex2i(p1.x - y, p1.y + x);
+        glVertex2i(p1.x - y, p1.y - x);
+
+        x++;
     }
-}
-
-void drawLineBresenhamV(Point p1, Point p2)
-{
-    if (p1.y > p2.y)
-    {
-        std::swap(p1.x, p2.x);
-        std::swap(p1.y, p2.y);
-    }
-
-    int dx = p2.x - p1.x;
-    int dy = p2.y - p1.y;
-
-    int dir = dx > 0 ? 1 : -1;
-    dx *= dir;
-
-    if (dy != 0)
-    {
-        int p = 2 * dx - dy;
-
-        glBegin(GL_POINTS);
-
-        for (int y = p1.y, x = p1.x; y < p1.y + dy + 1; y++)
-        {
-            glVertex2i(x, y);
-
-            if (p >= 0)
-            {
-                x += dir;
-                p -= 2 * dy;
-            }
-
-            p += 2 * dx;
-        }
-
-        glEnd();
-    }
+    glEnd();
 }
 
 void display()
@@ -102,14 +48,7 @@ void display()
 
     glColor3f(0.0, 1.0, 0.0);
 
-    drawLineBresenham(Point(0, 0), Point(25, 50));
-    drawLineBresenham(Point(0, 0), Point(50, 25));
-    drawLineBresenham(Point(100, 100), Point(75, 50));
-    drawLineBresenham(Point(100, 100), Point(50, 75));
-    drawLineBresenham(Point(0, 100), Point(25, 50));
-    drawLineBresenham(Point(0, 100), Point(50, 75));
-    drawLineBresenham(Point(100, 0), Point(75, 50));
-    drawLineBresenham(Point(100, 0), Point(50, 25));
+    drawCircle(Point(0, 0), 9);
 
     glFlush();
 }
@@ -121,7 +60,7 @@ void init()
     glPointSize(2.0);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluOrtho2D(0, 100, 0, 100);
+    gluOrtho2D(-10, 10, -10, 10);
 }
 
 int main(int argc, char** argv)
